@@ -399,6 +399,14 @@ void loop()
           case RETURN_ANALOG_PIN:
           {
             byte selected_pin = pin[1] - '0';
+            if (selected_pin > 5) {
+              print_http_error(client);
+              break;
+            }
+            if (!pin_list[selected_pin].available) {
+              print_http_error(client);
+              break;
+            }
             sprintf(out_value,"%d",analogRead(selected_pin));
             print_http_ok(client);
             client.print("{");
@@ -410,6 +418,10 @@ void loop()
           case RETURN_GARAGE:
           {
             byte selected_garage = pin[1] - '0';
+            if (selected_garage >= NUM_GARAGES) {
+              print_http_error(client);
+              break;
+            }
             print_http_ok(client);
             client.print("{");
             assemble_garage_json(client,selected_garage);
@@ -420,6 +432,14 @@ void loop()
           case RETURN_DIGITAL_PIN:
           {
             byte selected_pin = pin[0] - '0';
+            if (selected_pin > 9) {
+              print_http_error(client);
+              break;
+            }
+            if (!pin_list[selected_pin].available) {
+              print_http_error(client);
+              break;
+            }
             print_http_ok(client);
             client.print("{");
             assemble_pin_json(client,selected_pin);
@@ -430,7 +450,10 @@ void loop()
           case SET_GARAGE:
           {
             byte selected_garage = pin[1] - '0';
-            
+            if (selected_garage >= NUM_GARAGES) {
+              print_http_error(client);
+              break;
+            }
             if(strncmp(value, "TOG", 3) == 0) {
               garage_toggle(selected_garage);
               print_http_ok(client);         
