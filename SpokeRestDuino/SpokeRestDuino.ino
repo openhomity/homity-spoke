@@ -403,7 +403,7 @@ void loop()
               print_http_error(client);
               break;
             }
-            if (!pin_list[selected_pin].available) {
+            if (!pin_list[selected_pin+10].available) {
               print_http_error(client);
               break;
             }
@@ -455,7 +455,7 @@ void loop()
               break;
             }
             if(strncmp(value, "TOG", 3) == 0) {
-              garage_toggle(selected_garage);
+              garage_toggle(garage_list[selected_garage].driver_pin);
               print_http_ok(client);         
             }
             else if(strncmp(value, "OFF", 3) == 0) {
