@@ -10,6 +10,18 @@
  * Pins 1,2,4,6 unavailable
  * Pins 3,5,7,8,9 available for digital input & output
  * Pins A1-A5 available for analog input
+ 
+ Customizing for your environment -
+ * Change values for mac[] and ip[]
+ * If using to control one or more garages -
+     * Set NUM_GARAGES to desired # of garage doors
+     * Call initialize_garage() in setup() once per garage to declare pins used for garage
+     
+ Garage wiring instructions -
+ * http://mydooropener.com/downloads/MyDoorOpener-Instructions-2.pdf
+ * Driver pin should use a relay to short the garage door button leads together
+ * Sensor pin should connect to a magnetic door sensor with a pull-down resistor
+ * Power pin should connect to a power switch tail II inline with the garage's hard power line
 
  APIs Available -
 
@@ -55,7 +67,7 @@
                                         "on":false
                                      <garage> in format [G0-G4]                            
 
-  /<garage>/<value>                  - Perform action on garage. 
+  /<garage>/<action>                  - Perform action on garage. 
                                       TOG opens or closes the garage.  ON/OFF toggles the power.
                                       
  */
@@ -88,7 +100,7 @@ typedef struct {
   boolean on;
 } garage_t;
 
-#define NUM_GARAGES 1
+#define NUM_GARAGES 0
 garage_t garage_list[NUM_GARAGES];  // More garages can be added if needed
 
 typedef enum {
@@ -252,7 +264,7 @@ void setup()
   initialize_analog_input_pin(15);
   
   //initialize garages here, if more entries added make sure to increase global garage_list array
-  initialize_garage(0,7,9,5);  //garage_num=0,driver_pin=7, sensor_pin=9, power_pin=5
+  //initialize_garage(0,7,9,5);  //garage_num=0,driver_pin=7, sensor_pin=9, power_pin=5
 }
 
 #define BUFSIZE 12
